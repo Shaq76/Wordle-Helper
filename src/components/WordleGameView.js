@@ -45,10 +45,10 @@ class WordleGameView extends Component {
     }
 
     onGetResultsClicked = () => {
-        //let newState = {...this.state}
-        //newState.results = ["plops"]//this.findResults()
-        //this.setState(newState)
-        this.state.results = this.findResults()
+        let newState = {...this.state}
+        newState.results = ["plops"]//this.findResults()
+        this.setState(newState)
+
         this.forceUpdate()
     }
 
@@ -59,11 +59,13 @@ class WordleGameView extends Component {
         //match(ui,'abc',   'abc',  '222');
         //match(ui,'aabbc', 'axxaa','20010');
 
+        let vocabPos = 0
+
         let remainingOccurances = [];
-        for (var vocabPos = 0; vocabPos < vocab.length; vocabPos++) {
+        for (vocabPos = 0; vocabPos < vocab.length; vocabPos++) {
             remainingOccurances[vocab[vocabPos]] = 0;
         }
-        for (var vocabPos = 0; vocabPos < vocab.length; vocabPos++) {
+        for (vocabPos = 0; vocabPos < vocab.length; vocabPos++) {
             remainingOccurances[vocab[vocabPos]]++;
         }
 
