@@ -1,0 +1,110 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 10vmin;
+  pointer-events: none;
+}
+
+.wordle-guess-view {
+  max-width: 400px;
+  display: grid;
+  grid-template-columns: 20% 20% 20% 20% 20%;
+}
+
+.grid-cell {
+  aspect-ratio: 1;
+  border: black 1px solid;
+  margin: 2px;
+  user-select: none;
+  font-size: 28pt;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+
+  font-weight: 700;
+}
+
+button {
+  font-size: 28pt;
+  display: flex;
+  align-items: left;
+}
+
+input {
+  max-width: 200px;
+  font-size: 18pt;
+  display: flex;
+  align-items: left;
+}
+
+.guess-error {
+  color: red;
+  font-size: smaller;
+}
+
+.correct-tile {
+  border-color: #6aaa64;
+  background-color: #6aaa64;
+}
+
+.empty-tile {
+  border-color: #d3d6da;
+  border-width: 2px;
+  background-color: white;
+}
+
+.wrong-place-tile {
+  border-color: #c9b458;
+  background-color: #c9b458;
+}
+
+.wrong-tile {
+  border-color:#787c7e;
+  background-color: #787c7e;
+}
+
+.result-list {
+  height:50vh;
+  overflow:hidden; 
+  overflow-y:scroll; 
+  list-style-type: none;
+  text-align: left;
+}
+
+.result {
+  background-color: #eee;
+  border: 1px solid #787c7e;
+  padding: 1px 5px;
+  margin: 1px;
+  width: 3.5em;
+  /*height: 1.75em;*/
+  /*vertical-align: middle; */
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,23 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import './css/App.css';
+import WordleGameView from './components/WordleGameView.js';
+import { WordleGame } from './model/WordleGame.js';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <p />
+        <img src="logo.png" className="App-logo" alt="logo" /><p>Matt's Wordle Helper</p>
       </header>
+      
+      <p />
+
+      <WordleGameView wordleGame={new WordleGame()} />
+
     </div>
   );
 }
