@@ -46,7 +46,7 @@ class WordleGameView extends Component {
 
     onGetResultsClicked = () => {
         let newState = {...this.state}
-        newState.results = ["plops"]//this.findResults()
+        newState.results = this.findResults()
         this.setState(newState)
 
         this.forceUpdate()
