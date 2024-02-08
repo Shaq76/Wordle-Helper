@@ -3,8 +3,6 @@ import './css/App.css';
 import icon from './Wordle.png';
 import WordleGameView from './components/WordleGameView.js';
 import { WordleGame } from './model/WordleGame.js';
-import { TileState, WordleTile } from './model/WordleTile.js';
-import WordleTileCell from './components/WordleTileCell.js';
 
 function App() {
   return (

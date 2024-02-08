@@ -4,6 +4,7 @@ import WordleGuessView from '../components/WordleGuessView'
 import { WordList } from '../model/WordList'
 import '../css/button.css'
 import WordleResultsView from './WordleResultsView'
+import workerScript from '../Worker'
 
 class WordleGameView extends Component {
     constructor(props) {
@@ -11,19 +12,65 @@ class WordleGameView extends Component {
         this.state = {
             wordleGame: props.wordleGame,
             showInputError: false,
-            results: this.findResults()
+            results: this.findResults(),
+            loops: null,
+            scoredWords: []
         }
 
-        /*if (this.state.wordleGame.guesses.length === 0) {
-            this.state.wordleGame.guesses.push(new WordleGuess("RALES"))
-            this.state.wordleGame.guesses.push(new WordleGuess("LOOPS"))
-        }*/
+        this.handleCalculate = this.handleCalculate.bind(this)
+        this.handleCalculateCancel = this.handleCalculateCancel.bind(this);
     }
+
+      handleCalculate() {
+        if(this.worker){
+            return
+        }
+
+        this.worker = new Worker(workerScript)
+        this.worker.addEventListener('message', e => {
+            //alert(e)
+          const type = e.data.type;
+          if (type === 'loading') {
+            const { loops, scoredWords } = e.data;
+            this.setState({
+                loops: loops,
+                scoredWords: scoredWords
+            })
+          }
+          else {
+            const { result } = e.data;
+            this.setState({
+              result
+            })
+          }
+        })
+
+        const words = this.findResults()
+        this.worker.postMessage(words)
+      }
+
+      handleCalculateCancel(){
+        if(this.worker){
+            this.worker.terminate()
+        }
+        this.worker = null
+      }
 
     onGuessClicked = () => {
         let guess = document.getElementById("GuessEdit").value
         document.getElementById("GuessEdit").value = ""
         this.addGuess(guess)
+    }
+
+    onResetClicked = () => {
+        this.handleCalculateCancel()
+        this.state.wordleGame.guesses = []
+        this.setState({
+            results: this.findResults(),
+            loops: null,
+            scoredWords: [],
+            showInputError: false
+        })
     }
 
     addGuess(guess){
@@ -39,6 +86,10 @@ class WordleGameView extends Component {
             newState.showInputError = false;
             newState.wordleGame.guesses.push(new WordleGuess(guess))
             newState.results = this.findResults()
+            newState.loops = 0
+            newState.scoredWords = []
+
+            this.handleCalculateCancel()
         }
 
         this.setState(newState);
@@ -100,7 +151,7 @@ class WordleGameView extends Component {
                 letters = letters.toLowerCase()
 
                 // Simple: deal with correct/incorrect letters.
-                for (var i = 0; i < result.length; i++) {
+                for (let i = 0; i < result.length; i++) {
                 // Not that simple for double letters.
                 /*if(result[i]==='0'){
                     this.vocab = this.vocab.filter(x=>x.indexOf(guess[i])==-1);
@@ -134,10 +185,25 @@ class WordleGameView extends Component {
             emptyGuesses.push(new WordleGuess("     "))
         }
 
+        let scoredWordsSummary = null
+        if(this.state.loops>0){
+            scoredWordsSummary = (
+                <>
+                    <h1>Current top {this.state.scoredWords.length} words to try: (iterations:{this.state.loops})</h1>
+                    <div>
+                        {/*this.state.scoredWords.map((w,i)=><div key={i}>{w.word}</div>)*/}
+                        <WordleResultsView className="result-list-small" key={this.state.loops} wordList={this.state.scoredWords} getWord={x=>x.word} getStats={x=>Math.floor(10*x.score/x.tried)/10} onClickedWord={this.onClickedWord} />
+                        {/*JSON.stringify(this.state.scoredWords)*/}
+                    </div>
+                </>
+            )
+        }
+
         return (
             <>
                 {/*<div>Wordle Game)</div>*/}
                 <div className="wordle-game container">
+
                     <div className="row">
                         <div className="col-sm">
                             {this.state.wordleGame.guesses.map((x, index) => <WordleGuessView key={index} wordleGuess={x} onChange={this.onGuessChange} />)}
@@ -153,6 +219,7 @@ class WordleGameView extends Component {
                                 <div className="row">
                                         <input id="GuessEdit" type="text" maxLength="5" />
                                         <button className="green-button" onClick={this.onGuessClicked}>Add</button>
+                                        <button className="green-button" onClick={this.onResetClicked}>Reset</button>
                                 </div>
                             </div>
                         </div>
@@ -161,13 +228,16 @@ class WordleGameView extends Component {
                                 <div className="col-sm">
                                     <h2>Results ({this.state.results.length})</h2>
                                 </div>
-                                {/*<div className="col-sm">
-                                    <button className="green-button" onClick={this.onGetResultsClicked}>Get</button>
-                                </div>*/}
                             </div>
                             <WordleResultsView key={this.state.results} wordList={this.state.results} onClickedWord={this.onClickedWord} />
                         </div>
                     </div>
+                </div>
+
+                <div>
+                    <button className="green-button" onClick={this.handleCalculate}>Calculate</button>
+                    <button className="green-button" onClick={this.handleCalculateCancel}>Cancel</button>
+                    {scoredWordsSummary}
                 </div>
             </>
         )
