@@ -64,12 +64,7 @@ const loopworker = () => {
 
         let loops = scoredWordsArray.length ? scoredWordsArray[0].tried : 0
 
-        // The UI only needs to see the top N
-        const firstN = scoredWordsArray.slice(0, 10);
-
-        console.log(firstN)
-
-        const data = { type: 'loading', loops, scoredWords: firstN }
+        const data = { type: 'loading', loops, scoredWords: scoredWordsArray }
         postMessage(data)
     }
 
@@ -101,7 +96,10 @@ const loopworker = () => {
 
         let lastUpdate = new Date().getSeconds()
 
-        while(true){
+        const maxLoops = 1000
+        let loops=0
+        while(loops<maxLoops){
+            loops++
 
             for(var i=0;i<words.length;i++){
                 let thisWord = words[i];
@@ -119,7 +117,7 @@ const loopworker = () => {
             }
 
             let newTime = new Date().getSeconds()
-            if(lastUpdate===newTime){
+            if(lastUpdate===newTime && loops!=maxLoops){
                 continue;
             }
             lastUpdate = newTime

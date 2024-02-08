@@ -20,7 +20,7 @@ class WordleResultsView extends Component {
 
     addScoreInfo = (item)=>{
         if(typeof item === 'object' && item.tried>0){
-            return <div className="result-score">{item.score}</div>
+            return <div className="result-score">{Math.floor(10*item.score/item.tried)/10}</div>
         }
         return null
     }

@@ -87,7 +87,23 @@ input {
 
 .result-score {
   font-size:xx-small;
-  color: green;
+  color: #6aaa64;
+}
+
+.info {
+    cursor: pointer;
+    margin-left: 0.2em;
+    color:#fff;
+    background-color:#6aaa64;
+    width:1.5em;
+    height:1.5em;
+    display:inline-block;
+    border-radius:100%;
+    text-align:center;
+    text-decoration:none;
+    -webkit-box-shadow: inset -1px -1px 1px 0px rgba(0,0,0,0.25);
+    -moz-box-shadow: inset -1px -1px 1px 0px rgba(0,0,0,0.25);
+    box-shadow: inset -1px -1px 1px 0px rgba(0,0,0,0.25);
 }
 
 .App-header {

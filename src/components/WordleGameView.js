@@ -14,7 +14,8 @@ class WordleGameView extends Component {
             showInputError: false,
             results: this.findResults(),
             loops: null,
-            scoredWords: []
+            working: false,
+            showInfo: false
         }
 
         this.handleCalculate = this.handleCalculate.bind(this)
@@ -34,7 +35,7 @@ class WordleGameView extends Component {
             const { loops, scoredWords } = e.data;
             this.setState({
                 loops: loops,
-                scoredWords: scoredWords
+                results: scoredWords
             })
           }
           else {
@@ -47,6 +48,10 @@ class WordleGameView extends Component {
 
         const words = this.findResults()
         this.worker.postMessage(words)
+
+        this.setState({
+            working: true,
+        })
       }
 
       handleCalculateCancel(){
@@ -54,7 +59,13 @@ class WordleGameView extends Component {
             this.worker.terminate()
         }
         this.worker = null
-      }
+
+        this.setState({working:false})
+    }
+
+    toggleInfo = ()=>{
+        this.setState({ showInfo: !this.state.showInfo })
+    }
 
     onGuessClicked = () => {
         let guess = document.getElementById("GuessEdit").value
@@ -93,6 +104,8 @@ class WordleGameView extends Component {
         }
 
         this.setState(newState);
+
+        this.handleCalculateCancel()
     }
 
     onGetResultsClicked = () => {
@@ -179,24 +192,23 @@ class WordleGameView extends Component {
         this.addGuess(word)
     }
 
+    createInfo = () => {
+        if(!this.state.showInfo){
+            return null
+        }
+
+        let s = "The list will gradually update to show the best word."
+        if(this.state.loops>0){
+            s = s + ` (Loops: ${this.state.loops})`            
+        }
+
+        return <div className="alert alert-info" role="alert">{s}</div>
+    }
+
     render() {
         let emptyGuesses = []
         for (var i = 0; i < 6 - this.state.wordleGame.guesses.length; i++) {
             emptyGuesses.push(new WordleGuess("     "))
-        }
-
-        let scoredWordsSummary = null
-        if(this.state.loops>0){
-            scoredWordsSummary = (
-                <>
-                    <h1>Current top {this.state.scoredWords.length} words to try: (iterations:{this.state.loops})</h1>
-                    <div>
-                        {/*this.state.scoredWords.map((w,i)=><div key={i}>{w.word}</div>)*/}
-                        <WordleResultsView className="result-list-small" key={this.state.loops} wordList={this.state.scoredWords} getWord={x=>x.word} getStats={x=>Math.floor(10*x.score/x.tried)/10} onClickedWord={this.onClickedWord} />
-                        {/*JSON.stringify(this.state.scoredWords)*/}
-                    </div>
-                </>
-            )
         }
 
         return (
@@ -228,16 +240,18 @@ class WordleGameView extends Component {
                                 <div className="col-sm">
                                     <h2>Results ({this.state.results.length})</h2>
                                 </div>
+                                <div>
+                                    { this.state.working ? null : <button className="green-button" onClick={this.handleCalculate}>Find Best Guess</button>}
+                                    { this.state.working ? <button className="green-button" onClick={this.handleCalculateCancel}>Stop</button> : null}
+                                    <div className="info" onClick={this.toggleInfo}>?</div>
+                                </div>
                             </div>
-                            <WordleResultsView key={this.state.results} wordList={this.state.results} onClickedWord={this.onClickedWord} />
+                            <>
+                                {this.createInfo()}
+                                <WordleResultsView key={this.state.loops} wordList={this.state.results} onClickedWord={this.onClickedWord} />
+                            </>
                         </div>
                     </div>
-                </div>
-
-                <div>
-                    <button className="green-button" onClick={this.handleCalculate}>Calculate</button>
-                    <button className="green-button" onClick={this.handleCalculateCancel}>Cancel</button>
-                    {scoredWordsSummary}
                 </div>
             </>
         )
