@@ -199,7 +199,12 @@ class WordleGameView extends Component {
 
         let s = "The list will gradually update to show the best word."
         if(this.state.loops>0){
-            s = s + ` (Loops: ${this.state.loops})`            
+            if(this.state.results.length>10000){
+                s = s + ` (These results were calculated earlier)`            
+            }
+            else{
+                s = s + ` (Loops: ${this.state.loops})`            
+            }
         }
 
         return <div className="alert alert-info" role="alert">{s}</div>
