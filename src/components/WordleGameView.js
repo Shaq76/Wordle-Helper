@@ -235,7 +235,7 @@ class WordleGameView extends Component {
                     {/* RIGHT HAND SIDE*/}
                     <div className="col-sm">
                         <div className="d-flex flex-row bd-highlight mb-3">
-                            <h3>Results ({this.state.results.length})</h3>
+                            <h3>Results </h3><h6>({this.state.results.length})</h6>
                             {this.state.working ? null : <button className="green-button" onClick={this.handleCalculate}>Find Best Guess</button>}
                             {this.state.working ? <button className="green-button" onClick={this.handleCalculateCancel}>Stop</button> : null}
                             <div className="info" onClick={this.toggleInfo}>?</div>

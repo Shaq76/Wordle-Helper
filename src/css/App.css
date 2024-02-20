@@ -85,6 +85,10 @@ input {
   /*vertical-align: middle; */
 }
 
+.result-count {
+  vertical-align: middle;  
+}
+
 .result-score {
   font-size:xx-small;
   color: #6aaa64;
