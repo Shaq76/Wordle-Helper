@@ -217,50 +217,34 @@ class WordleGameView extends Component {
         }
 
         return (
-            <>
-                {/*<div>Wordle Game)</div>*/}
-                <div className="wordle-game container">
-
-                    <div className="row">
-                        <div className="col-sm">
-                            {this.state.wordleGame.guesses.map((x, index) => <WordleGuessView key={index} wordleGuess={x} onChange={this.onGuessChange} />)}
-                            {emptyGuesses.map((x, index) => <WordleGuessView key={index} wordleGuess={x} />)}
-
-                            <p></p>
-                            <div className='container'>
-                                <div className="row">
-                                    <div className="col-sm-6">
-                                        {this.state.showInputError ? <div className="alert alert-danger" role="alert">Please enter a 5 letter word</div> : null}
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-sm">
-                                        <input id="GuessEdit" type="text" maxLength="5" />
-                                        <button className="green-button" onClick={this.onGuessClicked}>Add</button>
-                                        <button className="green-button" onClick={this.onResetClicked}>Reset</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-sm">
-                            <div className="row">
-                                <div className="col-sm">
-                                    <h2>Results ({this.state.results.length})</h2>
-                                    <div>
-                                        {this.state.working ? null : <button className="green-button" onClick={this.handleCalculate}>Find Best Guess</button>}
-                                        {this.state.working ? <button className="green-button" onClick={this.handleCalculateCancel}>Stop</button> : null}
-                                        <div className="info" onClick={this.toggleInfo}>?</div>
-                                    </div>
-                                </div>                            
-                            </div>
-                            <>
-                                {this.createInfo()}
-                                <WordleResultsView key={this.state.loops + this.state.results.length} wordList={this.state.results} onClickedWord={this.onClickedWord} />
-                            </>
+            <div className="wordle-game container">
+                <div className="row">
+                    {/* LEFT HAND SIDE*/}
+                    <div className="col-sm">
+                        {this.state.wordleGame.guesses.map((x, index) => <WordleGuessView key={index} wordleGuess={x} onChange={this.onGuessChange} />)}
+                        {emptyGuesses.map((x, index) => <WordleGuessView key={index} wordleGuess={x} />)}
+                        <p></p>
+                        {this.state.showInputError ? <div className="alert alert-danger" role="alert">Please enter a 5 letter word</div> : null}
+                        <div class="d-flex flex-row bd-highlight mb-3">
+                            <input className="form-control me-auto" id="GuessEdit" type="text" maxLength="5" />
+                            <button className="btn green-button" onClick={this.onGuessClicked}>Add</button>
+                            <button className="btn green-button" onClick={this.onResetClicked}>Reset</button>
                         </div>
                     </div>
+
+                    {/* RIGHT HAND SIDE*/}
+                    <div className="col-sm">
+                        <div class="d-flex flex-row bd-highlight mb-3">
+                            <h2>Results ({this.state.results.length})</h2>
+                            {this.state.working ? null : <button className="green-button" onClick={this.handleCalculate}>Find Best Guess</button>}
+                            {this.state.working ? <button className="green-button" onClick={this.handleCalculateCancel}>Stop</button> : null}
+                            <div className="info" onClick={this.toggleInfo}>?</div>
+                        </div>
+                        {this.createInfo()}
+                        <WordleResultsView key={this.state.loops + this.state.results.length} wordList={this.state.results} onClickedWord={this.onClickedWord} />
+                    </div>
                 </div>
-            </>
+            </div>
         )
     }
 }
