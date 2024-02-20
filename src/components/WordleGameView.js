@@ -225,7 +225,7 @@ class WordleGameView extends Component {
                         {emptyGuesses.map((x, index) => <WordleGuessView key={index} wordleGuess={x} />)}
                         <p></p>
                         {this.state.showInputError ? <div className="alert alert-danger" role="alert">Please enter a 5 letter word</div> : null}
-                        <div class="d-flex flex-row bd-highlight mb-3">
+                        <div className="d-flex flex-row bd-highlight mb-3">
                             <input className="form-control me-auto" id="GuessEdit" type="text" maxLength="5" />
                             <button className="btn green-button" onClick={this.onGuessClicked}>Add</button>
                             <button className="btn green-button" onClick={this.onResetClicked}>Reset</button>
@@ -234,8 +234,8 @@ class WordleGameView extends Component {
 
                     {/* RIGHT HAND SIDE*/}
                     <div className="col-sm">
-                        <div class="d-flex flex-row bd-highlight mb-3">
-                            <h2>Results ({this.state.results.length})</h2>
+                        <div className="d-flex flex-row bd-highlight mb-3">
+                            <h3>Results ({this.state.results.length})</h3>
                             {this.state.working ? null : <button className="green-button" onClick={this.handleCalculate}>Find Best Guess</button>}
                             {this.state.working ? <button className="green-button" onClick={this.handleCalculateCancel}>Stop</button> : null}
                             <div className="info" onClick={this.toggleInfo}>?</div>
