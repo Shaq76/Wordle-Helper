@@ -24,6 +24,7 @@
   touch-action: manipulation;
   vertical-align: middle;
   white-space: nowrap;
+  height: 2.5em;
 }
 
 .green-button:focus:not(:focus-visible):not(.focus-visible) {

@@ -117,7 +117,7 @@ const loopworker = () => {
             }
 
             let newTime = new Date().getSeconds()
-            if(lastUpdate===newTime && loops!=maxLoops){
+            if(lastUpdate===newTime && loops!==maxLoops){
                 continue;
             }
             lastUpdate = newTime

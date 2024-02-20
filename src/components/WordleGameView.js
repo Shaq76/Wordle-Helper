@@ -234,9 +234,11 @@ class WordleGameView extends Component {
                                     </div>
                                 </div>
                                 <div className="row">
+                                    <div className="col-sm">
                                         <input id="GuessEdit" type="text" maxLength="5" />
                                         <button className="green-button" onClick={this.onGuessClicked}>Add</button>
                                         <button className="green-button" onClick={this.onResetClicked}>Reset</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -244,16 +246,16 @@ class WordleGameView extends Component {
                             <div className="row">
                                 <div className="col-sm">
                                     <h2>Results ({this.state.results.length})</h2>
-                                </div>
-                                <div>
-                                    { this.state.working ? null : <button className="green-button" onClick={this.handleCalculate}>Find Best Guess</button>}
-                                    { this.state.working ? <button className="green-button" onClick={this.handleCalculateCancel}>Stop</button> : null}
-                                    <div className="info" onClick={this.toggleInfo}>?</div>
-                                </div>
+                                    <div>
+                                        {this.state.working ? null : <button className="green-button" onClick={this.handleCalculate}>Find Best Guess</button>}
+                                        {this.state.working ? <button className="green-button" onClick={this.handleCalculateCancel}>Stop</button> : null}
+                                        <div className="info" onClick={this.toggleInfo}>?</div>
+                                    </div>
+                                </div>                            
                             </div>
                             <>
                                 {this.createInfo()}
-                                <WordleResultsView key={this.state.loops} wordList={this.state.results} onClickedWord={this.onClickedWord} />
+                                <WordleResultsView key={this.state.loops + this.state.results.length} wordList={this.state.results} onClickedWord={this.onClickedWord} />
                             </>
                         </div>
                     </div>
